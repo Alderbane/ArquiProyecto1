@@ -35,7 +35,7 @@ jal Hanoy
 j end
 
 #algorithm to solve hanoy
-#params: $t0= tower size, towers= $t1 $t2 $t3
+#params: $t0= tower size, $t1 = origen, $t2 = auxiliar, $t3 = destino
 Hanoy:
 addi $sp, $sp, -4
 sw $ra, 0($sp)
