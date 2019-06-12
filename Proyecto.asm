@@ -40,18 +40,24 @@ j end
 Hanoi:
 addi $sp, $sp, -4	#push return address
 sw $ra, 0($sp)
-bne $t0, 1, move_disc
+beq $t0, 1, move_disc
 
 #Hanoi(N-1, A, C, B)
-
+add $t4, $zero, $t2
+add $t2, $zero, $t3
+add $t3, $zero, $t4
 jal Hanoi
 
 #Hanoi(1, A, B, C)
-
+add $t4, $zero, $t2
+add $t2, $zero, $t3
+add $t3, $zero, $t4
 jal Hanoi
 
 #Hanoi(N-1, B, A, C)
-
+add $t4, $zero, $t2
+add $t2, $zero, $t1
+add $t1, $zero, $t4
 jal Hanoi
 j finish
 move_disc:
@@ -60,6 +66,7 @@ lw $t9, 0($t1) #save value of origin tower in a placeholder
 sw $zero, 0($t1) #clean tower value
 addi $t1, $t1, -4 #reduce tower pointer
 sw $t9, 0($t3) #store value in destiny tower
+addi $t3, $t3, 4
 
 finish:
 lw $ra, 0($sp)		#pop return address
