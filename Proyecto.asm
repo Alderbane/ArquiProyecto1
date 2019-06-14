@@ -2,7 +2,7 @@
 
 .text
 #numero de torres
-addi $s0, $s0, 3
+addi $s0, $s0, 8
 
 #direcciones de torres 1 a 3
 addi $a1, $zero, 0x1001
@@ -27,7 +27,6 @@ addi $t0, $t0, -1 #next disc value
 bne $t0, $zero, loop_fill
 
 add $t0, $s0, $zero 
-add $t1, $a1, $zero
 add $t2, $a2, $zero
 add $t3, $a3, $zero
 jal Hanoi
@@ -38,9 +37,10 @@ j end
 #params: $t0= tower size, $t1 = origin, $t2 = auxiliary, $t3 = destiny
 Hanoi:
 #STACK
-addi $sp, $sp, -8	#push return address
+addi $sp, $sp, -12	#push return address
 sw $ra, 0($sp)		#push return N value
 sw $t0, 4($sp)
+sw $t5, 8($sp)		#push placeholder
 
 
 beq $t0, 1, move_disc
@@ -51,33 +51,42 @@ add $t2, $zero, $t3
 add $t3, $zero, $t4
 
 sub $t0, $t0, 1 #N-1
+add $t5, $t0, $zero
 jal Hanoi
 
 #Hanoi(1, A, B, C)
 add $t4, $zero, $t2
 add $t2, $zero, $t3
 add $t3, $zero, $t4
+addi $t0, $zero, 1
 jal Hanoi
 
 #Hanoi(N-1, B, A, C)
+add $t0, $zero, $t5
+add $t4, $zero, $t2
+add $t2, $zero, $t1
+add $t1, $zero, $t4
+jal Hanoi
+
+#return each tower to its original position
 add $t4, $zero, $t2
 add $t2, $zero, $t1
 add $t1, $zero, $t4
 
-jal Hanoi
 j finish
 move_disc:
 
+addi $t1, $t1, -4 #reduce origin tower pointer
 lw $t9, 0($t1) #save value of origin tower in a placeholder
 sw $zero, 0($t1) #clean tower value
-addi $t1, $t1, -4 #reduce tower pointer
 sw $t9, 0($t3) #store value in destiny tower
 addi $t3, $t3, 4
 
 finish:
 lw $ra, 0($sp)	#pop return address
 lw $t0, 4($sp)	#pop return N value
-addi $sp, $sp, 8
+lw $t5, 8($sp)	#pop placeholder
+addi $sp, $sp, 12
 jr $ra
 
 end:
