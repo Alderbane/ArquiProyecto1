@@ -1,3 +1,6 @@
+#Luis David Gallegos Godoy
+#Guillermo Hernandez Landeros
+
 .data
 
 .text
@@ -5,16 +8,16 @@
 addi $s0, $s0, 8
 
 #direcciones de torres 1 a 3
-addi $a1, $zero, 0x1001
+addi $a1, $zero, 0x1001 #direction of tower 1 destination
 sll $a1, $a1, 16
 
 addi $a2, $zero, 0x1001
 sll $a2, $a2, 16
-addi $a2, $a2, 0x0020
+addi $a2, $a2, 0x0020  #direction of tower 2 destination
 
 addi $a3, $zero, 0x1001
 sll $a3, $a3, 16
-addi $a3, $a3, 0x0040
+addi $a3, $a3, 0x0040 #direction of tower 3 destination
 
 add $t1, $a1, $zero
 
@@ -26,7 +29,7 @@ addi $t1, $t1, 4 #next disc memory value
 addi $t0, $t0, -1 #next disc value
 bne $t0, $zero, loop_fill
 
-add $t0, $s0, $zero 
+add $t0, $s0, $zero
 add $t2, $a2, $zero
 add $t3, $a3, $zero
 jal Hanoi
@@ -37,9 +40,9 @@ j end
 #params: $t0= tower size, $t1 = origin, $t2 = auxiliary, $t3 = destiny
 Hanoi:
 #STACK
-addi $sp, $sp, -12	#push return address
-sw $ra, 0($sp)		#push return N value
-sw $t0, 4($sp)
+addi $sp, $sp, -12
+sw $ra, 0($sp)		#push return address
+sw $t0, 4($sp)    #push return N value
 sw $t5, 8($sp)		#push placeholder
 
 
