@@ -4,6 +4,8 @@
 .data
 
 .text
+lui $sp, 0x1001
+addi $sp, $sp, 0x0FFFF
 #numero de torres
 addi $s0, $s0, 8
 
